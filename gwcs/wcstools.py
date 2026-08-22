@@ -211,14 +211,14 @@ def grid_from_bounding_box(bounding_box, step=1, center=True, selector=None):
     --------
     >>> bb = ((-1, 2.9), (6, 7.5))
     >>> grid_from_bounding_box(bb, step=(1, .5), center=False)
-    array([[[-1. ,  0. ,  1. ,  2. ,  3. ],
-            [-1. ,  0. ,  1. ,  2. ,  3. ],
-            [-1. ,  0. ,  1. ,  2. ,  3. ],
-            [-1. ,  0. ,  1. ,  2. ,  3. ]],
-           [[ 6. ,  6. ,  6. ,  6. ,  6. ],
-            [ 6.5,  6.5,  6.5,  6.5,  6.5],
-            [ 7. ,  7. ,  7. ,  7. ,  7. ],
-            [ 7.5,  7.5,  7.5,  7.5,  7.5]]])
+    array([[[-1. ,  0. ,  1. ,  2. ],
+            [-1. ,  0. ,  1. ,  2. ],
+            [-1. ,  0. ,  1. ,  2. ],
+            [-1. ,  0. ,  1. ,  2. ]],
+           [[ 6. ,  6. ,  6. ,  6. ],
+            [ 6.5,  6.5,  6.5,  6.5],
+            [ 7. ,  7. ,  7. ,  7. ],
+            [ 7.5,  7.5,  7.5,  7.5]]])
 
     >>> bb = ((-1, 2.9), (6, 7.5))
     >>> grid_from_bounding_box(bb)
@@ -275,7 +275,9 @@ def grid_from_bounding_box(bounding_box, step=1, center=True, selector=None):
 
     slices = []
     for d, s in zip(bb, step, strict=False):
-        slices.append(slice(d[0], d[1] + s, s))
+        span = (d[1] - d[0]) / s
+        npoints = int(np.floor(np.nextafter(span, np.inf))) + 1
+        slices.append(slice(d[0], d[0] + npoints * s, s))
     grid = np.mgrid[slices[::-1]][::-1]
     if ndim == 1:
         return grid[0]

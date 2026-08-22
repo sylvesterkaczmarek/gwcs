@@ -1,0 +1,1 @@
+Prevent ``grid_from_bounding_box`` from generating samples beyond the upper bounding-box limit when the step does not divide the interval exactly.
