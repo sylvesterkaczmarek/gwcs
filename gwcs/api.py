@@ -216,6 +216,8 @@ class WCSAPIMixin(BaseLowLevelWCS, HighLevelWCSMixin, NativeAPIMixin):
         order, where for an image, ``x`` is the horizontal coordinate and ``y``
         is the vertical coordinate.
         """
+        if not all(np.isscalar(array) for array in pixel_arrays):
+            pixel_arrays = np.broadcast_arrays(*pixel_arrays, subok=True)
         return self._remove_quantity_frame(
             self.evaluate(*pixel_arrays), self.output_frame
         )

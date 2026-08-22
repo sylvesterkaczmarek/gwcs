@@ -1,0 +1,1 @@
+Allow broadcast-compatible scalar and array pixel inputs in ``pixel_to_world_values`` without requiring callers to broadcast them manually.
